@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../PitCrewModel/PitCrewModel.csproj" />
+  <Project Path="PitCrewAPI.csproj" />
+</Solution>

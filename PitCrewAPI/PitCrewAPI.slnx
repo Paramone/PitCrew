@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="../PitCrewModel.Tests/PitCrewModel.Tests.csproj" Id="73b15c46-831c-4578-b04a-f1fe284778b4" />
   <Project Path="../PitCrewModel/PitCrewModel.csproj" />
   <Project Path="PitCrewAPI.csproj" />
 </Solution>

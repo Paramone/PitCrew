@@ -28,6 +28,11 @@ namespace PitCrewModel.Services.DayOne
                 throw new ArgumentException("Invalid input provided");
             }
 
+            if (chunkSize <= 1)
+            {
+                throw new ArgumentException("Chunksize may not be lower than 2.");
+            }
+
             // Split the lists into chunks.
             List<int> windowedDepths = GroupIntoWindows(depths);
             List<List<int>> chunks = SplitIntoChunks(windowedDepths, chunkSize);

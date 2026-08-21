@@ -7,11 +7,11 @@ namespace PitCrewAPI.Controllers
     [Route("[controller]")]
     public class CodeChallengeController : ControllerBase
     {
-        private readonly IDepthCalculationService _depthCalculationService;
+        private readonly IChallengeServiceFactory _challengeFactory;
 
-        public CodeChallengeController(IDepthCalculationService depthCalculationService)
+        public CodeChallengeController(IChallengeServiceFactory challengeFactory)
         {
-            _depthCalculationService = depthCalculationService;
+            _challengeFactory = challengeFactory;
         }
 
         /// <summary>
@@ -27,46 +27,56 @@ namespace PitCrewAPI.Controllers
         /// </summary>
         /// <param name="file">A file uploaded by the user, as .txt format.</param>
         /// <returns></returns>
-        [HttpPost("day-one/newline")]
-        public async Task<ActionResult<int>> DayOneNewline(IFormFile file)
+        [HttpPost("day/{day}/part/{part}/newline")]
+        public async Task<ActionResult<int>> SolveNewline(int day, int part, IFormFile file)
         {
-            // Check if there is a file
             if (file == null || file.Length == 0)
                 return BadRequest("No file provided");
 
-            // Check if file is larger than 1MB. A file full of numbers shouldn't be that large. 
             if (file.Length > 1_000_000)
                 return BadRequest("File too large");
 
-            // Check if it's .txt and not some virus.exe :-)
             if (Path.GetExtension(file.FileName).ToLower() != ".txt")
                 return BadRequest("Only .txt files are allowed");
 
             using StreamReader reader = new(file.OpenReadStream());
             string rawInput = await reader.ReadToEndAsync();
-            // ONLY spaces, digits and spaces are allowed. 
+
             if (!rawInput.All(c => char.IsDigit(c) || c == '\n' || c == '\r' || c == ' '))
                 return BadRequest("File contains invalid characters");
 
-            // Parse numbers into list 
-            List<int> numbers = rawInput
-                .Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(x => int.Parse(x.Trim()))
-                .ToList();
+            var challenge = _challengeFactory.GetChallenge(day, part);
+            if (challenge == null)
+                return NotFound($"Day {day} part {part} is not implemented");
 
-            // TODO: Misschien een mooiere response maken, hoeveel items het waren, hoeveel lists, hoelang het duurde?
-            return Ok(_depthCalculationService.CountDepthIncreases(numbers));
+            try
+            {
+                List<int> numbers = rawInput
+                    .Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(x => int.Parse(x.Trim()))
+                    .ToList();
+
+                return Ok(challenge.Solve(numbers));
+            }
+            catch (FormatException)
+            {
+                return BadRequest("File contains invalid data");
+            }
         }
 
         //TODO: misschien DTO
-        [HttpPost("day-one")]
-        public ActionResult<int> DayOne([FromBody] List<int> numbers)
+        [HttpPost("day/{day}/part/{part}")]
+        public ActionResult<int> Solve(int day, int part, [FromBody] List<int> numbers)
         {
             if (numbers == null || !numbers.Any())
                 return BadRequest("No numbers provided");
 
+            var challenge = _challengeFactory.GetChallenge(day, part);
+            if (challenge == null)
+                return NotFound($"Day {day} part {part} is not implemented");
+
             // TODO: Misschien een mooiere response maken, hoeveel items het waren, hoeveel lists, hoelang het duurde?
-            return Ok(_depthCalculationService.CountDepthIncreases(numbers));
+            return Ok(challenge.Solve(numbers));
         }
     }
 }

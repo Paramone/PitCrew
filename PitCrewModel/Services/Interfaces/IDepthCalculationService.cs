@@ -2,6 +2,6 @@
 {
     public interface IDepthCalculationService
     {
-        int CountDepthIncreases(List<int> numbers, int maxListAmount = 200);
+        int CountDepthIncreases(List<int> depths, int chunkSize = 200);
     }
 }

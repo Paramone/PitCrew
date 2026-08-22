@@ -1,4 +1,4 @@
-﻿using PitCrewModel.Services.DayOne;
+﻿using PitCrewModel.Services.Day1;
 
 namespace PitCrewModel.Tests
 {

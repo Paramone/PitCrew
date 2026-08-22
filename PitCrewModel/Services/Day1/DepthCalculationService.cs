@@ -1,8 +1,8 @@
 ﻿using PitCrewModel.Services.Interfaces;
 
-namespace PitCrewModel.Services.DayOne
+namespace PitCrewModel.Services.Day1
 {
-    public class DepthCalculationService : IDepthCalculationService, IChallengeService
+    public class DepthCalculationService : IDepthCalculationService, IChallengeService<List<int>>
     {
         public DepthCalculationService(int windowSize = 1)
         {

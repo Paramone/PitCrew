@@ -65,7 +65,7 @@ namespace PitCrewAPI.Controllers
         }
 
         //TODO: misschien DTO
-        [HttpPost("day/{day}/part/{part}")]
+        [HttpPost("day/{day}/part/{part}")] 
         public ActionResult<int> Solve(int day, int part, [FromBody] List<int> numbers)
         {
             if (numbers == null || !numbers.Any())

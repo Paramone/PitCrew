@@ -6,4 +6,4 @@
 using System.Diagnostics.CodeAnalysis;
 
 // I hate that Visual Studio keeps reminding me that ".Count == 0" is faster than ".Any()". I find it more clean. Sue me. (don't)
-[assembly: SuppressMessage("Performance", "CA1860:Avoid using 'Enumerable.Any()' extension method", Justification = "<Pending>", Scope = "member", Target = "~M:PitCrewModel.Services.DayOne.DepthCalculationService.ValidateInput(System.Collections.Generic.List{System.Int32})")]
+[assembly: SuppressMessage("Performance", "CA1860:Avoid using 'Enumerable.Any()' extension method", Justification = "<Pending>", Scope = "member", Target = "~M:PitCrewModel.Services.Day1.DepthCalculationService.ValidateInput(System.Collections.Generic.List{System.Int32})")]

@@ -1,8 +1,8 @@
 ﻿using PitCrewModel.Services.Interfaces;
 
-namespace PitCrewModel.Services.DayOne
+namespace PitCrewModel.Services.Day1
 {
-    public class DepthCalculationService : IDepthCalculationService, IChallengeService
+    public class DepthCalculationService : IDepthCalculationService, IChallengeService<List<int>>
     {
         public DepthCalculationService(int windowSize = 1)
         {
@@ -26,6 +26,11 @@ namespace PitCrewModel.Services.DayOne
             {
                 // TODO: hardcoded exception to global resource file, consistent exceptions messages.
                 throw new ArgumentException("Invalid input provided");
+            }
+
+            if (chunkSize <= 1)
+            {
+                throw new ArgumentException("Chunksize may not be lower than 2.");
             }
 
             // Split the lists into chunks.
